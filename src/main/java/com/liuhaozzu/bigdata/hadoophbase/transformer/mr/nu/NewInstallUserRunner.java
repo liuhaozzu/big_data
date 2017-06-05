@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.Filter;
@@ -72,8 +71,8 @@ public class NewInstallUserRunner implements Tool {
 		 * "hadoop1"); conf.set("hbase.zookeeper.quorum",
 		 * "hadoop1,hadoop2,hadoop3");
 		 */
-		this.conf.set("mapred.jar", "D:\\git-repos\\big_data\\target\\flumehbase-0.0.1-SNAPSHOT.jar");
-		this.conf = HBaseConfiguration.create(conf);
+		this.conf.set("mapred.jar", "D:\\git-repos\\big_data\\target\\uber-flumehbase-0.0.1-SNAPSHOT.jar");
+		// this.conf = HBaseConfiguration.create(conf);
 	}
 
 	@Override

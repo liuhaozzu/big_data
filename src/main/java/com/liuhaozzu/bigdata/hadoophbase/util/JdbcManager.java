@@ -32,14 +32,15 @@ public class JdbcManager {
 		String passwordStr = String.format(GlobalConstants.JDBC_PASSWORD, flag);
 
 		String driverClass = conf.get(driverStr);
-		String url = conf.get(urlStr);
-		String username = conf.get(usernameStr);
-		String password = conf.get(passwordStr);
+		// String url = conf.get(urlStr);
+		String url = "jdbc:mysql://hadoop1:3306/result_db?useUnicode=true&amp;characterEncoding=utf8";
+		// String username = conf.get(usernameStr);
+		// String password = conf.get(passwordStr);
 		try {
-			Class.forName(driverClass);
+			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			// nothing
 		}
-		return DriverManager.getConnection(url, username, password);
+		return DriverManager.getConnection(url, "root", "root");
 	}
 }

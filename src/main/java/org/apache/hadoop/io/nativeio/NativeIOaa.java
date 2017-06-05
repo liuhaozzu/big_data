@@ -22,8 +22,6 @@ import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.fs.HardLink;
 import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.SecureIOUtils.AlreadyExistsException;
-import org.apache.hadoop.io.nativeio.Errno;
-import org.apache.hadoop.io.nativeio.NativeIOException;
 import org.apache.hadoop.util.NativeCodeLoader;
 import org.apache.hadoop.util.PerformanceAdvisory;
 import org.apache.hadoop.util.Shell;
@@ -39,7 +37,7 @@ import sun.misc.Unsafe;
  */
 @InterfaceAudience.Private
 @InterfaceStability.Unstable
-public class NativeIO {
+public class NativeIOaa {
 	public static class POSIX {
 		// Flags for open() call from bits/fcntl.h
 		public static final int O_RDONLY = 00;
