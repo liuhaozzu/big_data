@@ -64,12 +64,15 @@ public class NewInstallUserRunner implements Tool {
 
 	@Override
 	public void setConf(Configuration conf) {
-		conf.addResource("output-collector.xml");
-		conf.addResource("query-mapping.xml");
-		conf.addResource("transformer-env.xml");
-		conf.set("fs.defaultFS", "hdfs://hadoop1:8020");
-		conf.set("yarn.resourcemanager.hostname", "hadoop1");
-		conf.set("hbase.zookeeper.quorum", "hadoop1,hadoop2,hadoop3");
+		/*
+		 * conf.addResource("output-collector.xml");
+		 * conf.addResource("query-mapping.xml");
+		 * conf.addResource("transformer-env.xml"); conf.set("fs.defaultFS",
+		 * "hdfs://hadoop1:8020"); conf.set("yarn.resourcemanager.hostname",
+		 * "hadoop1"); conf.set("hbase.zookeeper.quorum",
+		 * "hadoop1,hadoop2,hadoop3");
+		 */
+		this.conf.set("mapred.jar", "D:\\git-repos\\big_data\\target\\flumehbase-0.0.1-SNAPSHOT.jar");
 		this.conf = HBaseConfiguration.create(conf);
 	}
 
