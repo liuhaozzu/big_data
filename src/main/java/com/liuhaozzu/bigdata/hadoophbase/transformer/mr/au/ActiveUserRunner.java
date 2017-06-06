@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
@@ -33,7 +32,7 @@ import com.liuhaozzu.bigdata.hadoophbase.util.TimeUtil;
  */
 public class ActiveUserRunner implements Tool {
 	private static final Logger logger = Logger.getLogger(ActiveUserRunner.class);
-	private Configuration conf = null;
+	private Configuration conf = new Configuration();
 
 	public static void main(String[] args) {
 		try {
@@ -54,15 +53,17 @@ public class ActiveUserRunner implements Tool {
 		// 结果: 2和4都是返回的是file:///
 
 		// 添加自定义的配置文件
-		conf.set("fs.defaultFS", "hdfs://node6:8020");
-		conf.set("yarn.resourcemanager.hostname", "node6");
-		conf.set("hbase.zookeeper.quorum", "node6,node7,node8");
-		conf.addResource("transformer-env.xml");
-		conf.addResource("query-mapping.xml");
-		conf.addResource("output-collector.xml");
+		// conf.set("fs.defaultFS", "hdfs://node6:8020");
+		// conf.set("yarn.resourcemanager.hostname", "node6");
+		// conf.set("hbase.zookeeper.quorum", "node6,node7,node8");
+		this.conf.addResource("transformer-env.xml");
+		this.conf.addResource("query-mapping.xml");
+		this.conf.addResource("output-collector.xml");
+		this.conf.set("mapred.jar", "D:\\git-repos\\big_data\\target\\uber-flumehbase-0.0.1-SNAPSHOT.jar");
+
 		// 创建hbase相关的config对象(包含hbase配置文件)
 		// hbase创建config的时候，会将指定参数的configuration所有的内容加载到内存中。
-		this.conf = HBaseConfiguration.create(conf);
+		// this.conf = HBaseConfiguration.create(conf);
 	}
 
 	@Override
