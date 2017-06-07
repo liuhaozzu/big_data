@@ -359,11 +359,7 @@ public class YARNRunner implements ClientProtocol {
 		List<String> vargs = new ArrayList<String>(8);
 		vargs.add(MRApps.crossPlatformifyMREnv(jobConf, Environment.JAVA_HOME) + "/bin/java");
 
-		// TODO: why do we use 'conf' some places and 'jobConf' others?
-		long logSize = jobConf.getLong(MRJobConfig.MR_AM_LOG_KB, MRJobConfig.DEFAULT_MR_AM_LOG_KB) << 10;
-		String logLevel = jobConf.get(MRJobConfig.MR_AM_LOG_LEVEL, MRJobConfig.DEFAULT_MR_AM_LOG_LEVEL);
-		int numBackups = jobConf.getInt(MRJobConfig.MR_AM_LOG_BACKUPS, MRJobConfig.DEFAULT_MR_AM_LOG_BACKUPS);
-		MRApps.addLog4jSystemProperties(logLevel, logSize, numBackups, vargs, conf);
+		MRApps.addLog4jSystemProperties(null, vargs, conf);
 
 		// Check for Java Lib Path usage in MAP and REDUCE configs
 		warnForJavaLibPath(conf.get(MRJobConfig.MAP_JAVA_OPTS, ""), "map", MRJobConfig.MAP_JAVA_OPTS,
@@ -421,12 +417,13 @@ public class YARNRunner implements ClientProtocol {
 		environment.put(Environment.SHELL.name(),
 				conf.get(MRJobConfig.MAPRED_ADMIN_USER_SHELL, MRJobConfig.DEFAULT_SHELL));
 
-		// Add the container working directory at the front of LD_LIBRARY_PATH
+		// Add the container working directory in front of LD_LIBRARY_PATH
 		MRApps.addToEnvironment(environment, Environment.LD_LIBRARY_PATH.name(),
 				MRApps.crossPlatformifyMREnv(conf, Environment.PWD), conf);
 
 		// Setup the environment variables for Admin first
-		MRApps.setEnvFromInputString(environment, conf.get(MRJobConfig.MR_AM_ADMIN_USER_ENV), conf);
+		MRApps.setEnvFromInputString(environment,
+				conf.get(MRJobConfig.MR_AM_ADMIN_USER_ENV, MRJobConfig.DEFAULT_MR_AM_ADMIN_USER_ENV), conf);
 		// Setup the environment variables (LD_LIBRARY_PATH, etc)
 		MRApps.setEnvFromInputString(environment, conf.get(MRJobConfig.MR_AM_ENV), conf);
 
@@ -632,6 +629,17 @@ public class YARNRunner implements ClientProtocol {
 					+ "programs to no longer function if hadoop native libraries "
 					+ "are used. These values should be set as part of the " + "LD_LIBRARY_PATH in the " + component
 					+ " JVM env using " + envConf + " config settings.");
+		}
+	}
+
+	public void close() throws IOException {
+		if (resMgrDelegate != null) {
+			resMgrDelegate.close();
+			resMgrDelegate = null;
+		}
+		if (clientCache != null) {
+			clientCache.close();
+			clientCache = null;
 		}
 	}
 }
